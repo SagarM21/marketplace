@@ -7,8 +7,8 @@ export default function Home({ courses }) {
 	return (
 		<BaseLayout>
 			<Hero />
-			{JSON.stringify(courses)}
-			<CourseList />
+			
+			<CourseList courses={courses} />
 		</BaseLayout>
 	);
 }
