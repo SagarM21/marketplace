@@ -6,9 +6,12 @@ import { BaseLayout } from "@components/layout";
 export default function Course({ course }) {
 	return (
 		<BaseLayout>
-			{course.title}
 			<div className='py-4'>
-				<CourseHero />
+				<CourseHero
+					title={course.title}
+					description={course.description}
+					image={course.coverImage}
+				/>
 			</div>
 			<KeyPoints />
 			<Curriculum />
