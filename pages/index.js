@@ -5,11 +5,14 @@ import { CourseList } from "@components/ui/course";
 import { BaseLayout } from "@components/ui/layout";
 
 function Home({ courses }) {
-	const { web3, isInitialized } = useWeb3();
-	console.log(web3);
+	const { web3, isLoading } = useWeb3();
 	return (
 		<>
-			{isInitialized ? "IS INIT" : "NOT INIT"}
+			{isLoading
+				? "Is loading web3"
+				: web3
+				? "Web3 ready"
+				: "Please install metamask"}
 			<Hero />
 			<CourseList courses={courses} />
 		</>
