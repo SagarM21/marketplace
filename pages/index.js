@@ -5,22 +5,23 @@ import { CourseList } from "@components/ui/course";
 import { BaseLayout } from "@components/ui/layout";
 
 function Home({ courses }) {
-	const { test } = useWeb3();
+	const { web3, isInitialized } = useWeb3();
+	console.log(web3);
 	return (
 		<>
-			{test}
+			{isInitialized ? "IS INIT" : "NOT INIT"}
 			<Hero />
 			<CourseList courses={courses} />
 		</>
 	);
 }
-export default function PageInjections({...props}) {
+export default function PageInjections({ ...props }) {
 	return (
-	  <BaseLayout>
-		<Home {...props} />
-	  </BaseLayout>
-	)
-  }
+		<BaseLayout>
+			<Home {...props} />
+		</BaseLayout>
+	);
+}
 
 export function getStaticProps() {
 	const { data } = getAllCourses();
