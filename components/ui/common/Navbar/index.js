@@ -42,7 +42,7 @@ export default function Navbar() {
 							) : isWeb3Loaded ? (
 								account.data ? (
 									<Button className='cursor-default' hoverable={false}>
-										Hi There
+										Hi There {account.isAdmin ? "Admin" : ""}
 									</Button>
 								) : (
 									<Button onClick={connect}>Connect</Button>
