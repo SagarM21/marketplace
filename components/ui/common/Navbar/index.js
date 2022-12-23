@@ -18,7 +18,7 @@ export default function Navbar() {
 									Home
 								</a>
 							</Link>
-							<Link href='/' legacyBehavior>
+							<Link href='/marketplace' legacyBehavior>
 								<a className='font-medium mr-8 text-gray-500 hover:text-gray-900'>
 									Marketplace
 								</a>
