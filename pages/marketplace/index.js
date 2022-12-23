@@ -1,4 +1,5 @@
 import { useAccount } from "@components/hooks/web3/useAccount";
+import { useNetwork } from "@components/hooks/web3/useNetwork";
 import { Hero } from "@components/ui/common";
 import { getAllCourses } from "@components/ui/content/courses/fetcher";
 import { CourseList } from "@components/ui/course";
@@ -7,9 +8,11 @@ import { WalletBar } from "@components/ui/web3";
 
 function Marketplace({ courses }) {
 	const { account } = useAccount();
+	const { network } = useNetwork();
 	return (
 		<>
 			<div className='py-4'>
+				{network.data}
 				<WalletBar address={account.data} />
 			</div>
 			<CourseList courses={courses} />
