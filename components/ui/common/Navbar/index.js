@@ -5,7 +5,7 @@ import { useAccount } from "@components/hooks/web3";
 import { useRouter } from "next/router";
 
 export default function Navbar() {
-	const { connect, isLoading, isWeb3Loaded } = useWeb3();
+	const { connect, isLoading, web3 } = useWeb3();
 	const { account } = useAccount();
 	const { pathname } = useRouter();
 
@@ -41,7 +41,7 @@ export default function Navbar() {
 								<Button onClick={connect} disabled={true}>
 									Connecting
 								</Button>
-							) : isWeb3Loaded ? (
+							) : web3 != null ? (
 								account.data ? (
 									<Button className='cursor-default' hoverable={false}>
 										Hi There {account.isAdmin ? "Admin" : ""}
