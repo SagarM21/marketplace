@@ -1,5 +1,4 @@
-import { useAccount } from "@components/hooks/web3/useAccount";
-import { useNetwork } from "@components/hooks/web3/useNetwork";
+import { useAccount, useNetwork } from "@components/hooks/web3";
 import { Hero } from "@components/ui/common";
 import { getAllCourses } from "@components/ui/content/courses/fetcher";
 import { CourseCard, CourseList } from "@components/ui/course";
@@ -18,7 +17,7 @@ function Marketplace({ courses }) {
 						data: network.data,
 						target: network.target,
 						isSupported: network.isSupported,
-						hasFinishedFirstFetch: network.hasFinishedFirstFetch,
+						hasInitialResponse: network.hasInitialResponse,
 					}}
 				/>
 			</div>
