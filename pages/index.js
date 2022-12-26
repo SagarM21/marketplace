@@ -8,8 +8,7 @@ function Home({ courses }) {
 		<>
 			<Hero />
 			<CourseList courses={courses}>
-				{" "}
-				{(course) => <CourseCard course={course} key={course.id} />}{" "}
+				{(course) => <CourseCard course={course} key={course.id} />}
 			</CourseList>
 		</>
 	);
