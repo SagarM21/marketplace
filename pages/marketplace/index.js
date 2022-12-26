@@ -1,5 +1,5 @@
 import { useAccount, useNetwork } from "@components/hooks/web3";
-import { Hero } from "@components/ui/common";
+import { Button, Hero } from "@components/ui/common";
 import { getAllCourses } from "@components/ui/content/courses/fetcher";
 import { CourseCard, CourseList } from "@components/ui/course";
 import { BaseLayout } from "@components/ui/layout";
@@ -22,7 +22,17 @@ function Marketplace({ courses }) {
 				/>
 			</div>
 			<CourseList courses={courses}>
-				{(course) => <CourseCard course={course} key={course.id} />}
+				{(course) => (
+					<CourseCard
+						course={course}
+						key={course.id}
+						Footer={() => (
+							<div className='mt-4'>
+								<Button variant='lightPurple'>Purchase</Button>
+							</div>
+						)}
+					/>
+				)}
 			</CourseList>
 		</>
 	);
