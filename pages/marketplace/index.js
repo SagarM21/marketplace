@@ -5,8 +5,10 @@ import { CourseCard, CourseList } from "@components/ui/course";
 import { BaseLayout } from "@components/ui/layout";
 import { OrderModal } from "@components/ui/order";
 import { WalletBar } from "@components/ui/web3";
+import { useState } from "react";
 
 function Marketplace({ courses }) {
+	const [selectedCourse, setSelectedCourse] = useState(null);
 	const { account } = useAccount();
 	const { network } = useNetwork();
 	return (
@@ -29,13 +31,23 @@ function Marketplace({ courses }) {
 						key={course.id}
 						Footer={() => (
 							<div className='mt-4'>
-								<Button variant='lightPurple'>Purchase</Button>
+								<Button
+									variant='lightPurple'
+									onClick={() => setSelectedCourse(course)}
+								>
+									Purchase
+								</Button>
 							</div>
 						)}
 					/>
 				)}
 			</CourseList>
-			<OrderModal />
+			{selectedCourse && (
+				<OrderModal
+					course={selectedCourse}
+					onClose={() => setSelectedCourse(null)}
+				/>
+			)}
 		</>
 	);
 }
