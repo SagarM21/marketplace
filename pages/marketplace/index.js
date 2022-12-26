@@ -1,8 +1,9 @@
 import { useAccount, useNetwork } from "@components/hooks/web3";
-import { Button, Hero, Modal } from "@components/ui/common";
+import { Button } from "@components/ui/common";
 import { getAllCourses } from "@components/ui/content/courses/fetcher";
 import { CourseCard, CourseList } from "@components/ui/course";
 import { BaseLayout } from "@components/ui/layout";
+import { OrderModal } from "@components/ui/order";
 import { WalletBar } from "@components/ui/web3";
 
 function Marketplace({ courses }) {
@@ -34,7 +35,7 @@ function Marketplace({ courses }) {
 					/>
 				)}
 			</CourseList>
-			<Modal isOpen={true} />
+			<OrderModal />
 		</>
 	);
 }
