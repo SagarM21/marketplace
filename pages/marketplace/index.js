@@ -12,7 +12,7 @@ function Marketplace({ courses }) {
 	const [selectedCourse, setSelectedCourse] = useState(null);
 	const { account } = useAccount();
 	const { network } = useNetwork();
-	const { eth } = useEthPrice();
+	const { eth, ethPerItem } = useEthPrice();
 	return (
 		<>
 			<div className='py-4'>
@@ -25,7 +25,7 @@ function Marketplace({ courses }) {
 						hasInitialResponse: network.hasInitialResponse,
 					}}
 				/>
-				<EthRates eth={eth.data} />
+				<EthRates eth={eth.data} ethPerItem={eth.perItem} />
 			</div>
 			<CourseList courses={courses}>
 				{(course) => (
