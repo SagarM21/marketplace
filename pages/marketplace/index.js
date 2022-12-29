@@ -12,7 +12,7 @@ function Marketplace({ courses }) {
 	const [selectedCourse, setSelectedCourse] = useState(null);
 	const { account } = useAccount();
 	const { network } = useNetwork();
-	const { eth, ethPerItem } = useEthPrice();
+	const { eth } = useEthPrice();
 	return (
 		<>
 			<div className='py-4'>
