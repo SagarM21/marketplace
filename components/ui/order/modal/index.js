@@ -1,17 +1,31 @@
 import { Modal, Button } from "@components/ui/common";
 import { useEffect, useState } from "react";
+import { useEthPrice } from "@components/hooks/useEthPrice";
+
+const defaultOrder = {
+	price: "",
+	email: "",
+	confirmationEmail: "",
+};
 
 export default function OrderModal({ course, onClose }) {
 	const [isOpen, setIsOpen] = useState(false);
+	const [order, setOrder] = useState(defaultOrder);
+	const { eth } = useEthPrice();
 
 	useEffect(() => {
 		if (!!course) {
 			setIsOpen(true);
+			setOrder({
+				...defaultOrder,
+				price: eth.perItem,
+			});
 		}
 	}, [course]);
 
 	const closeModal = () => {
 		setIsOpen(false);
+		setOrder(defaultOrder);
 		onClose();
 	};
 
@@ -40,6 +54,16 @@ export default function OrderModal({ course, onClose }) {
 									</div>
 								</div>
 								<input
+									value={order.price}
+									onChange={({ target: { value } }) => {
+										if (isNaN(value)) {
+											return;
+										}
+										setOrder({
+											...order,
+											price: value,
+										});
+									}}
 									type='text'
 									name='price'
 									id='price'
@@ -85,9 +109,9 @@ export default function OrderModal({ course, onClose }) {
 									<input type='checkbox' className='form-checkbox' />
 								</label>
 								<span>
-									I accept Eincode &apos;terms of service&apos; and I agree that
-									my order can be rejected in the case data provided above are
-									not correct
+									I accept &apos;terms & services&apos; and I agree that my
+									order can be rejected in the case data provided above are not
+									correct
 								</span>
 							</div>
 						</div>
