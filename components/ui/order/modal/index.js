@@ -13,22 +13,28 @@ const _createFormState = (isDisabled = false, message = "") => ({
 	message,
 });
 
-const createFormState = ({ price, email, confirmationEmail }) => {
+const createFormState = ({ price, email, confirmationEmail }, hasAgreedTOS) => {
 	if (!price || Number(price) <= 0) {
 		return _createFormState(true, "Price is not valid.");
 	} else if (confirmationEmail.length === 0 || email.length === 0) {
 		return _createFormState(true);
 	} else if (email !== confirmationEmail) {
 		return _createFormState(true, "Email are not matching.");
+	} else if (!hasAgreedTOS) {
+		return _createFormState(
+			true,
+			"You need to agree with terms of service in order to submit the form"
+		);
 	}
 
 	return _createFormState();
 };
 
-export default function OrderModal({ course, onClose }) {
+export default function OrderModal({ course, onClose, onSubmit }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [order, setOrder] = useState(defaultOrder);
 	const [enablePrice, setEnablePrice] = useState(false);
+	const [hasAgreedTOS, setHasAgreedTOS] = useState(false);
 	const { eth } = useEthPrice();
 
 	useEffect(() => {
@@ -44,10 +50,12 @@ export default function OrderModal({ course, onClose }) {
 	const closeModal = () => {
 		setIsOpen(false);
 		setOrder(defaultOrder);
+		setEnablePrice(false);
+		setHasAgreedTOS(false);
 		onClose();
 	};
 
-	const formState = createFormState(order);
+	const formState = createFormState(order, hasAgreedTOS);
 	return (
 		<Modal isOpen={isOpen}>
 			<div className='inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full'>
@@ -149,7 +157,14 @@ export default function OrderModal({ course, onClose }) {
 							</div>
 							<div className='text-xs text-gray-700 flex'>
 								<label className='flex items-center mr-2'>
-									<input type='checkbox' className='form-checkbox' />
+									<input
+										type='checkbox'
+										className='form-checkbox'
+										checked={hasAgreedTOS}
+										onChange={({ target: { checked } }) => {
+											setHasAgreedTOS(checked);
+										}}
+									/>
 								</label>
 								<span>
 									I accept &apos;terms & services&apos; and I agree that my
@@ -158,7 +173,7 @@ export default function OrderModal({ course, onClose }) {
 								</span>
 							</div>
 							{formState.message && (
-								<div className='p-4 my-3 text-red-700 bg-red-200 rounded-lg text-sm'>
+								<div className='p-4 my-3 text-yellow-700 bg-yellow-200 rounded-lg text-sm'>
 									{formState.message}
 								</div>
 							)}
@@ -169,7 +184,7 @@ export default function OrderModal({ course, onClose }) {
 					<Button
 						disabled={formState.isDisabled}
 						onClick={() => {
-							alert(JSON.stringify(order));
+							onSubmit(order);
 						}}
 					>
 						Submit
