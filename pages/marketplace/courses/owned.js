@@ -2,7 +2,7 @@ import { OwnedCourseCard } from "@components/ui/course";
 import { BaseLayout } from "@components/ui/layout";
 import { MarketHeader } from "@components/ui/marketplace";
 
-export default function OwnedCourses() {
+function OwnedCourses() {
 	return (
 		<>
 			<div className='py-4'>
@@ -15,4 +15,11 @@ export default function OwnedCourses() {
 	);
 }
 
-OwnedCourses.Layout = BaseLayout;
+export default function PageInjections({ ...props }) {
+	return (
+		<BaseLayout>
+			<OwnedCourses {...props} />
+		</BaseLayout>
+	);
+}
+
