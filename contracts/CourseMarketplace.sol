@@ -26,6 +26,9 @@ contract CourseMarketplace {
   // number of all courses + id of the course
   uint private totalOwnedCourses;
 
+  /// Course has already a Owner!
+  error CourseHasOwner();
+
   function purchaseCourse(
     bytes16 courseId, // 0x00000000000000000000000000003130
     bytes32 proof // 0x0000000000000000000000000000313000000000000000000000000000003130
@@ -40,6 +43,10 @@ contract CourseMarketplace {
     // keccak256 - c4eaa3558504e2baa2669001b43f359b8418b44a4477ff417b4b007d7cc86e37
               // - c4eaa3558504e2baa2669001b43f359b8418b44a4477ff417b4b007d7cc86e37
     bytes32 courseHash = keccak256(abi.encodePacked(courseId, msg.sender));
+
+    if (hasCourseOwnership(courseHash)) {
+      revert CourseHasOwner();
+    }
 
     uint id = totalOwnedCourses++;
 
@@ -75,5 +82,13 @@ contract CourseMarketplace {
     returns (Course memory)
   {
     return ownedCourses[courseHash];
+  }
+  
+  function hasCourseOwnership(bytes32 courseHash)
+    private
+    view
+    returns (bool)
+  {
+    return ownedCourses[courseHash].owner == msg.sender;
   }
 }
