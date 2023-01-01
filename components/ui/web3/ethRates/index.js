@@ -16,6 +16,7 @@ export default function EthRates() {
 									height='35'
 									width='35'
 									src='/small-eth.webp'
+									alt="small-eth"
 								/>
 								<span className='text-2xl font-bold'>= {eth.data}$</span>
 							</>
@@ -39,6 +40,7 @@ export default function EthRates() {
 									height='35'
 									width='35'
 									src='/small-eth.webp'
+									alt='small-eth'
 								/>
 								<span className='text-2xl font-bold'>= {COURSE_PRICE}$</span>
 							</>
