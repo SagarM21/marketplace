@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require("tailwindcss/defaultTheme");
 module.exports = {
 	content: [
 		"./pages/**/*.{js,ts,jsx,tsx}",
@@ -6,6 +7,10 @@ module.exports = {
 	],
 	// darkMode: false,
 	theme: {
+		screens: {
+			xs: "475px",
+			...defaultTheme.screens,
+		},
 		extend: {
 			flex: {
 				2: "2 2 0%",

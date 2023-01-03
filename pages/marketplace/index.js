@@ -41,16 +41,14 @@ function Marketplace({ courses }) {
 			const result = await contract.methods
 				.purchaseCourse(hexCourseId, proof)
 				.send({ from: account.data, value });
-			console.log(result,'hey');
+			// console.log(result, "hey");
 		} catch {
 			console.error("Purchase course: Operation has failed.");
 		}
 	};
 	return (
 		<>
-			<div className='py-4'>
-				<MarketHeader />
-			</div>
+			<MarketHeader />
 			<CourseList courses={courses}>
 				{(course) => (
 					<CourseCard
