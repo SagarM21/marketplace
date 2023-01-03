@@ -6,6 +6,12 @@ module.exports = {
 		"./components/**/*.{js,ts,jsx,tsx}",
 	],
 	// darkMode: false,
+	safelist: [
+		{
+			pattern: /bg-/,
+			variants: ["lg", "hover", "focus", "lg:hover"],
+		},
+	],
 	theme: {
 		screens: {
 			xs: "475px",
