@@ -18,6 +18,9 @@ export const handler = (web3, provider) => () => {
 		() => (web3 ? "web3/network" : null),
 		async () => {
 			const chainId = await web3.eth.getChainId();
+			if (!chainId) {
+				throw new Error("Cannot retrieve network, Please refresh the browser.");
+			}
 			return NETWORKS[chainId];
 		}
 	);

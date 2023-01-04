@@ -24,7 +24,10 @@ export const handler = (web3, provider) => () => {
 
 	useEffect(() => {
 		provider &&
-			provider.on("accountsChanged", (accounts) => mutate(accounts[0] ?? null));
+			provider.on("accountsChanged", (accounts) => {
+				console.log("ON ACCOUNT DATA");
+				mutate(accounts[0] ?? null);
+			});
 	}, [provider]);
 	return {
 		data,
