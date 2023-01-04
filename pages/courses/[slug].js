@@ -2,10 +2,14 @@ import { Modal } from "@components/ui/common";
 import { getAllCourses } from "@components/ui/content/courses/fetcher";
 import { Curriculum, CourseHero, KeyPoints } from "@components/ui/course";
 import { BaseLayout } from "@components/ui/layout";
+import { useAccount, useOwnedCourse } from "@components/hooks/web3";
 
-export default function Course({ course }) {
+function Course({ course }) {
+	const { account } = useAccount();
+	const { ownedCourse } = useOwnedCourse(course, account.data);
+	console.log(ownedCourse);
 	return (
-		<BaseLayout>
+		<>
 			<div className='py-4'>
 				<CourseHero
 					title={course.title}
@@ -16,7 +20,7 @@ export default function Course({ course }) {
 			<KeyPoints points={course.wsl} />
 			<Curriculum locked={true} />
 			<Modal />
-		</BaseLayout>
+		</>
 	);
 }
 
@@ -40,4 +44,12 @@ export function getStaticProps({ params }) {
 			course,
 		},
 	};
+}
+
+export default function Wrapper({ ...props }) {
+	return (
+		<BaseLayout>
+			<Course {...props} />
+		</BaseLayout>
+	);
 }
