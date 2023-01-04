@@ -6,9 +6,11 @@ import { MarketHeader } from "@components/ui/marketplace";
 import { getAllCourses } from "@components/ui/content/courses/fetcher";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { useWeb3 } from "@components/providers";
 
 function OwnedCourses({ courses }) {
 	const router = useRouter();
+	const { requireInstall } = useWeb3();
 	const { account } = useAccount();
 	const { ownedCourses } = useOwnedCourses(courses, account.data);
 	return (
@@ -24,6 +26,20 @@ function OwnedCourses({ courses }) {
 									<i>Purchase Course</i>
 								</a>
 							</Link>
+						</Message>
+					</div>
+				)}
+				{account.isEmpty && (
+					<div className='w-1/2'>
+						<Message type='warning'>
+							<div>Please connect to Metamask</div>
+						</Message>
+					</div>
+				)}
+				{requireInstall && (
+					<div className='w-1/2'>
+						<Message type='warning'>
+							<div>Please install Metamask</div>
 						</Message>
 					</div>
 				)}
