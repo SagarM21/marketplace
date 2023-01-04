@@ -3,12 +3,17 @@ import { getAllCourses } from "@components/ui/content/courses/fetcher";
 import { Curriculum, CourseHero, KeyPoints } from "@components/ui/course";
 import { BaseLayout } from "@components/ui/layout";
 import { useAccount, useOwnedCourse } from "@components/hooks/web3";
+import { useWeb3 } from "@components/providers";
 
 function Course({ course }) {
+	const { isLoading } = useWeb3();
 	const { account } = useAccount();
 	const { ownedCourse } = useOwnedCourse(course, account.data);
 	const courseState = ownedCourse.data?.state;
-	const isLocked = courseState === "purchased" || courseState === "deactivated";
+	const isLocked =
+		!courseState ||
+		courseState === "purchased" ||
+		courseState === "deactivated";
 	return (
 		<>
 			<div className='py-4'>
@@ -46,7 +51,11 @@ function Course({ course }) {
 					)}
 				</div>
 			)}
-			<Curriculum locked={isLocked} courseState={courseState} />
+			<Curriculum
+				isLoading={isLoading}
+				locked={isLocked}
+				courseState={courseState}
+			/>
 			<Modal />
 		</>
 	);
