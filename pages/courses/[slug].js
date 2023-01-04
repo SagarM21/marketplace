@@ -1,4 +1,4 @@
-import { Modal } from "@components/ui/common";
+import { Message, Modal } from "@components/ui/common";
 import { getAllCourses } from "@components/ui/content/courses/fetcher";
 import { Curriculum, CourseHero, KeyPoints } from "@components/ui/course";
 import { BaseLayout } from "@components/ui/layout";
@@ -7,7 +7,8 @@ import { useAccount, useOwnedCourse } from "@components/hooks/web3";
 function Course({ course }) {
 	const { account } = useAccount();
 	const { ownedCourse } = useOwnedCourse(course, account.data);
-	console.log(ownedCourse);
+	const courseState = ownedCourse.data?.state;
+	// console.log(ownedCourse);
 	return (
 		<>
 			<div className='py-4'>
@@ -19,6 +20,32 @@ function Course({ course }) {
 				/>
 			</div>
 			<KeyPoints points={course.wsl} />
+			{courseState && (
+				<div className='max-w-5xl mx-auto'>
+					{courseState === "purchased" && (
+						<Message type='warning'>
+							Course is purchased and waiting for the activation. Process can
+							take up to 24 hours.
+							<i className='block font-normal'>
+								In case of any questions, please contact info@sgr.com
+							</i>
+						</Message>
+					)}
+					{courseState === "activated" && (
+						<Message type='success'>
+							Sagar wishes you happy watching of the course.
+						</Message>
+					)}
+					{courseState === "deactivated" && (
+						<Message type='danger'>
+							Course has been deactivated, due to the incorrect purchase data.
+							The functionality to watch the course has been temporarily
+							disabled.
+							<i className='block font-normal'>Please contact info@sgr.com</i>
+						</Message>
+					)}
+				</div>
+			)}
 			<Curriculum locked={true} />
 			<Modal />
 		</>
