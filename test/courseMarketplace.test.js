@@ -29,6 +29,15 @@ contract("CourseMarketplace", (accounts) => {
 			});
 		});
 
+		it("should NOT allow to repurchase already owned course", async () => {
+			await catchRevert(
+				_contract.purchaseCourse(courseId, proof, {
+					from: buyer,
+					value,
+				})
+			);
+		});
+
 		it("can get the purchased course hash by index", async () => {
 			const index = 0;
 			courseHash = await _contract.getCourseHashAtIndex(index);
@@ -99,7 +108,7 @@ contract("CourseMarketplace", (accounts) => {
 			);
 		});
 
-		it("should transfer owership to 3rd address from 'accounts'", async () => {
+		it("should transfer ownership to 3rd address from 'accounts'", async () => {
 			await _contract.transferOwnership(accounts[2], { from: currentOwner });
 			const owner = await _contract.getContractOwner();
 			assert.equal(
@@ -109,7 +118,7 @@ contract("CourseMarketplace", (accounts) => {
 			);
 		});
 
-		it("should transfer owership back to initial contract owner'", async () => {
+		it("should transfer ownership back to initial contract owner'", async () => {
 			await _contract.transferOwnership(contractOwner, { from: accounts[2] });
 			const owner = await _contract.getContractOwner();
 			assert.equal(owner, contractOwner, "Contract owner is not set!");
