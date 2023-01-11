@@ -4,6 +4,9 @@ const { catchRevert } = require("./utils/exceptions");
 // Mocha - testing framework
 // Chai - assertion JS library
 
+const getBalance = async (address) => web3.eth.getBalance(address);
+const toBN = (value) => web3.utils.toBN(value);
+
 contract("CourseMarketplace", (accounts) => {
 	const courseId = "0x00000000000000000000000000003130";
 	const proof =
@@ -185,7 +188,17 @@ contract("CourseMarketplace", (accounts) => {
 			});
 
 			it("should be able repurchase with the original buyer", async () => {
-				await _contract.repurchaseCourse(courseHash2, { from: buyer, value });
+				const beforeTxBuyerBalance = await getBalance(buyer);
+				const result = await _contract.repurchaseCourse(courseHash2, {
+					from: buyer,
+					value,
+				});
+				const tx = await web3.eth.getTransaction(result.tx);
+				const afterTxBuyerBalance = await getBalance(buyer);
+
+				const gasUsed = toBN(result.receipt.gasUsed);
+				const gasPrice = toBN(tx.gasPrice);
+				const gas = gasUsed.mul(gasPrice);
 				const course = await _contract.getCourseByHash(courseHash2);
 				const expectedState = 0;
 
@@ -198,6 +211,12 @@ contract("CourseMarketplace", (accounts) => {
 					course.price,
 					value,
 					`The course price is not equal to ${value}`
+				);
+
+				assert.equal(
+					toBN(beforeTxBuyerBalance).sub(toBN(value)).sub(gas).toString(),
+					afterTxBuyerBalance,
+					"Client balance is not correct!"
 				);
 			});
 
