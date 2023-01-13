@@ -1,5 +1,5 @@
 import { useWalletInfo } from "@components/hooks/web3";
-import { Button } from "@components/ui/common";
+import { Button, Loader } from "@components/ui/common";
 import { getAllCourses } from "@components/ui/content/courses/fetcher";
 import { CourseCard, CourseList } from "@components/ui/course";
 import { BaseLayout } from "@components/ui/layout";
@@ -9,8 +9,8 @@ import { MarketHeader } from "@components/ui/marketplace";
 import { useWeb3 } from "@components/providers";
 
 function Marketplace({ courses }) {
-	const { web3, contract } = useWeb3();
-	const { canPurchaseCourse, account } = useWalletInfo();
+	const { web3, contract, requireInstall } = useWeb3();
+	const { hasConnectedWallet, isConnecting, account } = useWalletInfo();
 	const [selectedCourse, setSelectedCourse] = useState(null);
 
 	const purchaseCourse = async (order) => {
@@ -52,20 +52,36 @@ function Marketplace({ courses }) {
 			<CourseList courses={courses}>
 				{(course) => (
 					<CourseCard
-						course={course}
 						key={course.id}
-						disabled={!canPurchaseCourse}
-						Footer={() => (
-							<div className='mt-4'>
+						course={course}
+						disabled={!hasConnectedWallet}
+						Footer={() => {
+							if (requireInstall) {
+								return (
+									<Button disabled={true} variant='lightPurple'>
+										Install
+									</Button>
+								);
+							}
+
+							if (isConnecting) {
+								return (
+									<Button disabled={true} variant='lightPurple'>
+										<Loader size='sm' />
+									</Button>
+								);
+							}
+
+							return (
 								<Button
-									variant='lightPurple'
-									disabled={!canPurchaseCourse}
 									onClick={() => setSelectedCourse(course)}
+									disabled={!hasConnectedWallet}
+									variant='lightPurple'
 								>
 									Purchase
 								</Button>
-							</div>
-						)}
+							);
+						}}
 					/>
 				)}
 			</CourseList>
