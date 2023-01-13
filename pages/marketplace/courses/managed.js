@@ -38,14 +38,22 @@ export default function ManagedCourses() {
 	const { account } = useAdmin({ redirectTo: "/marketplace" });
 	const { managedCourses } = useManagedCourses(account);
 
-	const activateCourse = async (courseHash) => {
+	const changeCourseState = async (courseHash, method) => {
 		try {
-			await contract.methods.activateCourse(courseHash).send({
+			await contract.methods[method](courseHash).send({
 				from: account.data,
 			});
 		} catch (e) {
 			console.error(e.message);
 		}
+	};
+
+	const activateCourse = async (courseHash) => {
+		changeCourseState(courseHash, "activateCourse");
+	};
+
+	const deactivateCourse = async (courseHash) => {
+		changeCourseState(courseHash, "deactivateCourse");
 	};
 
 	const verifyCourse = (email, { hash, proof }) => {
@@ -103,7 +111,12 @@ export default function ManagedCourses() {
 								>
 									Activate
 								</Button>
-								<Button variant='red'>Deactivate</Button>
+								<Button
+									onClick={() => deactivateCourse(course.hash)}
+									variant='red'
+								>
+									Deactivate
+								</Button>
 							</div>
 						)}
 					</ManagedCourseCard>
