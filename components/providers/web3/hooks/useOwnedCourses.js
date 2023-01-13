@@ -19,7 +19,7 @@ export const handler = (web3, contract) => (courses, account) => {
 				const ownedCourse = await contract.methods
 					.getCourseByHash(courseHash)
 					.call();
-					
+
 				if (
 					ownedCourse.owner !== "0x0000000000000000000000000000000000000000"
 				) {
@@ -32,5 +32,12 @@ export const handler = (web3, contract) => (courses, account) => {
 		}
 	);
 
-	return swrRes;
+	return {
+		...swrRes,
+		lookup:
+			swrRes.data?.reduce((a, c) => {
+				a[c.id] = c;
+				return a;
+			}, {}) ?? {},
+	};
 };

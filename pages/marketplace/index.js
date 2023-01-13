@@ -1,4 +1,4 @@
-import { useWalletInfo } from "@components/hooks/web3";
+import { useWalletInfo, useOwnedCourses } from "@components/hooks/web3";
 import { Button, Loader } from "@components/ui/common";
 import { getAllCourses } from "@components/ui/content/courses/fetcher";
 import { CourseCard, CourseList } from "@components/ui/course";
@@ -11,6 +11,7 @@ import { useWeb3 } from "@components/providers";
 function Marketplace({ courses }) {
 	const { web3, contract, requireInstall } = useWeb3();
 	const { hasConnectedWallet, isConnecting, account } = useWalletInfo();
+	const { ownedCourses } = useOwnedCourses(courses, account.data);
 	const [selectedCourse, setSelectedCourse] = useState(null);
 
 	const purchaseCourse = async (order) => {
@@ -68,6 +69,20 @@ function Marketplace({ courses }) {
 								return (
 									<Button disabled={true} variant='lightPurple'>
 										<Loader size='sm' />
+									</Button>
+								);
+							}
+
+							if (!ownedCourses.hasInitialResponse) {
+								return <div style={{ height: "50px" }}></div>;
+							}
+
+							const owned = ownedCourses.lookup[course.id];
+
+							if (owned) {
+								return (
+									<Button disabled={true} variant='green'>
+										Owned
 									</Button>
 								);
 							}
