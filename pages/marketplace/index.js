@@ -13,6 +13,7 @@ function Marketplace({ courses }) {
 	const { hasConnectedWallet, isConnecting, account } = useWalletInfo();
 	const { ownedCourses } = useOwnedCourses(courses, account.data);
 	const [selectedCourse, setSelectedCourse] = useState(null);
+	const [isNewPurchase, setIsNewPurchase] = useState(true);
 
 	const purchaseCourse = async (order) => {
 		const hexCourseId = web3.utils.utf8ToHex(selectedCourse.id);
@@ -97,7 +98,10 @@ function Marketplace({ courses }) {
 														<Button
 															size='sm'
 															disabled={false}
-															onClick={() => alert("Re-activating")}
+															onClick={() => {
+																setIsNewPurchase(false);
+																setSelectedCourse(course);
+															}}
 															variant='purple'
 														>
 															Fund to Activate
@@ -127,8 +131,12 @@ function Marketplace({ courses }) {
 			{selectedCourse && (
 				<OrderModal
 					course={selectedCourse}
+					isNewPurchase={isNewPurchase}
 					onSubmit={purchaseCourse}
-					onClose={() => setSelectedCourse(null)}
+					onClose={() => {
+						setSelectedCourse(null);
+						setIsNewPurchase(true);
+					}}
 				/>
 			)}
 		</>
