@@ -1,10 +1,11 @@
 import { useAdmin, useManagedCourses } from "@components/hooks/web3";
 import { Button, Message } from "@components/ui/common";
 import { useWeb3 } from "@components/providers";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CourseFilter, ManagedCourseCard } from "@components/ui/course";
 import { BaseLayout } from "@components/ui/layout";
 import { MarketHeader } from "@components/ui/marketplace";
+import { normalizeOwnedCourse } from "@utils/normalize";
 
 const VerificationInput = ({ onVerify }) => {
 	const [email, setEmail] = useState("");
@@ -32,6 +33,7 @@ const VerificationInput = ({ onVerify }) => {
 };
 
 export default function ManagedCourses() {
+	const [searchedCourse, setSearchedCourse] = useState(null);
 	const [email, setEmail] = useState("");
 	const [proofedOwnership, setProofedOwnership] = useState({});
 	const { web3, contract } = useWeb3();
@@ -74,12 +76,19 @@ export default function ManagedCourses() {
 			  });
 	};
 
-	const searchCourse = (courseHash) => {
-		if (!courseHash) {
-			return;
-		}
+	const searchCourse = async (hash) => {
+		const re = /[0-9A-Fa-f]{6}/g;
 
-		alert(courseHash);
+		if (hash && hash.length === 66 && re.test(hash)) {
+			const course = await contract.methods.getCourseByHash(hash).call();
+
+			if (course.owner !== "0x0000000000000000000000000000000000000000") {
+				const normalized = normalizeOwnedCourse(web3)({ hash }, course);
+				setSearchedCourse(normalized);
+				return;
+			}
+		}
+		setSearchedCourse(null);
 	};
 
 	if (!account.isAdmin) {
