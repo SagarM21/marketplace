@@ -74,6 +74,14 @@ export default function ManagedCourses() {
 			  });
 	};
 
+	const searchCourse = (courseHash) => {
+		if (!courseHash) {
+			return;
+		}
+
+		alert(courseHash);
+	};
+
 	if (!account.isAdmin) {
 		return null;
 	}
@@ -81,7 +89,7 @@ export default function ManagedCourses() {
 	return (
 		<>
 			<MarketHeader />
-			<CourseFilter />
+			<CourseFilter onSearchSubmit={searchCourse} />
 			<section className='grid grid-cols-1'>
 				{managedCourses.data?.map((course) => (
 					<ManagedCourseCard key={course.ownedCourseId} course={course}>
