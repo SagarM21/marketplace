@@ -77,25 +77,32 @@ function Marketplace({ courses }) {
 								}
 
 								if (!ownedCourses.hasInitialResponse) {
-									return <div style={{ height: "50px" }}></div>;
+									return <div style={{ height: "42px" }}></div>;
 								}
 
 								if (owned) {
 									return (
 										<>
-											<div>
-												<Button disabled={true} variant='green' size='sm'>
-													Owned
+											<div className='flex'>
+												<Button
+													onClick={() => alert("You are owner of this course.")}
+													disabled={false}
+													variant='white'
+													size='sm'
+												>
+													Yours &#10004;
 												</Button>
 												{owned.state === "deactivated" && (
-													<Button
-														disabled={false}
-														onClick={() => alert("Re-activating")}
-														variant='purple'
-														size='sm'
-													>
-														Fund to Activate
-													</Button>
+													<div className='ml-1'>
+														<Button
+															size='sm'
+															disabled={false}
+															onClick={() => alert("Re-activating")}
+															variant='purple'
+														>
+															Fund to Activate
+														</Button>
+													</div>
 												)}
 											</div>
 										</>
