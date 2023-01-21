@@ -6,6 +6,7 @@ import { CourseFilter, ManagedCourseCard } from "@components/ui/course";
 import { BaseLayout } from "@components/ui/layout";
 import { MarketHeader } from "@components/ui/marketplace";
 import { normalizeOwnedCourse } from "@utils/normalize";
+import { withToast } from "test/utils/toast";
 
 const VerificationInput = ({ onVerify }) => {
 	const [email, setEmail] = useState("");
@@ -43,16 +44,18 @@ export default function ManagedCourses() {
 
 	const changeCourseState = async (courseHash, method) => {
 		try {
-			await contract.methods[method](courseHash).send({
+			const result = await contract.methods[method](courseHash).send({
 				from: account.data,
 			});
+
+			return result
 		} catch (e) {
-			console.error(e.message);
+			throw new Error(e.message);
 		}
 	};
 
 	const activateCourse = async (courseHash) => {
-		changeCourseState(courseHash, "activateCourse");
+		withToast(changeCourseState(courseHash, "activateCourse"));
 	};
 
 	const deactivateCourse = async (courseHash) => {
