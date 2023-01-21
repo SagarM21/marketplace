@@ -109,7 +109,7 @@ function Marketplace({ courses }) {
 							Footer={() => {
 								if (requireInstall) {
 									return (
-										<Button disabled={true} variant='lightPurple' sie='sm'>
+										<Button size='sm' disabled={true} variant='lightPurple'>
 											Install
 										</Button>
 									);
@@ -117,7 +117,7 @@ function Marketplace({ courses }) {
 
 								if (isConnecting) {
 									return (
-										<Button disabled={true} variant='lightPurple' size='sm'>
+										<Button size='sm' disabled={true} variant='lightPurple'>
 											<Loader size='sm' />
 										</Button>
 									);
@@ -125,6 +125,7 @@ function Marketplace({ courses }) {
 
 								if (!ownedCourses.hasInitialResponse) {
 									return (
+										// <div style={{height: "42px"}}></div>
 										<Button variant='white' disabled={true} size='sm'>
 											{hasConnectedWallet ? "Loading State..." : "Connect"}
 										</Button>
@@ -132,16 +133,15 @@ function Marketplace({ courses }) {
 								}
 
 								const isBusy = busyCourseId === course.id;
-
 								if (owned) {
 									return (
 										<>
 											<div className='flex'>
 												<Button
 													onClick={() => alert("You are owner of this course.")}
-													disabled={isBusy}
-													variant='white'
+													disabled={false}
 													size='sm'
+													variant='white'
 												>
 													Yours &#10004;
 												</Button>
@@ -149,7 +149,7 @@ function Marketplace({ courses }) {
 													<div className='ml-1'>
 														<Button
 															size='sm'
-															disabled={false}
+															disabled={isBusy}
 															onClick={() => {
 																setIsNewPurchase(false);
 																setSelectedCourse(course);
@@ -175,9 +175,9 @@ function Marketplace({ courses }) {
 								return (
 									<Button
 										onClick={() => setSelectedCourse(course)}
+										size='sm'
 										disabled={!hasConnectedWallet || isBusy}
 										variant='lightPurple'
-										size='sm'
 									>
 										{isBusy ? (
 											<div className='flex'>
@@ -202,9 +202,7 @@ function Marketplace({ courses }) {
 						purchaseCourse(formData, course);
 						cleanupModal();
 					}}
-					onClose={() => {
-						cleanupModal;
-					}}
+					onClose={cleanupModal}
 				/>
 			)}
 		</>
