@@ -67,13 +67,20 @@ function Marketplace({ courses }) {
 		}
 	};
 
-	const _repurchaseCourse = async ({courseHash, value}, course) => {
+	const _repurchaseCourse = async ({ courseHash, value }, course) => {
 		try {
 			const result = await contract.methods
 				.repurchaseCourse(courseHash)
 				.send({ from: account.data, value });
 
-			ownedCourses.mutate()
+			const index = ownedCourses.data.findIndex((c) => c.id === course.id);
+
+			if (index >= 0) {
+				ownedCourses.data[index].state = "purchased";
+				ownedCourses.mutate(ownedCourses.data);
+			} else {
+				ownedCourses.mutate();
+			}
 			return result;
 		} catch {
 			throw new Error(error.message);
@@ -132,7 +139,7 @@ function Marketplace({ courses }) {
 											<div className='flex'>
 												<Button
 													onClick={() => alert("You are owner of this course.")}
-													disabled={false}
+													disabled={isBusy}
 													variant='white'
 													size='sm'
 												>
@@ -149,7 +156,14 @@ function Marketplace({ courses }) {
 															}}
 															variant='purple'
 														>
-															Fund to Activate
+															{isBusy ? (
+																<div className='flex'>
+																	<Loader size='sm' />
+																	<div className='ml-2'>In Progress</div>
+																</div>
+															) : (
+																<div>Fund to Activate</div>
+															)}
 														</Button>
 													</div>
 												)}
