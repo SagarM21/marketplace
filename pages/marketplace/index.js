@@ -7,7 +7,7 @@ import { OrderModal } from "@components/ui/order";
 import { useState } from "react";
 import { MarketHeader } from "@components/ui/marketplace";
 import { useWeb3 } from "@components/providers";
-import { withToast } from "test/utils/toast";
+import { withToast } from "@utils/toast";
 
 function Marketplace({ courses }) {
 	const { web3, contract, requireInstall } = useWeb3();

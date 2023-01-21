@@ -6,7 +6,7 @@ import { CourseFilter, ManagedCourseCard } from "@components/ui/course";
 import { BaseLayout } from "@components/ui/layout";
 import { MarketHeader } from "@components/ui/marketplace";
 import { normalizeOwnedCourse } from "@utils/normalize";
-import { withToast } from "test/utils/toast";
+import { withToast } from "@utils/toast";
 
 const VerificationInput = ({ onVerify }) => {
 	const [email, setEmail] = useState("");
@@ -48,7 +48,7 @@ export default function ManagedCourses() {
 				from: account.data,
 			});
 
-			return result
+			return result;
 		} catch (e) {
 			throw new Error(e.message);
 		}
