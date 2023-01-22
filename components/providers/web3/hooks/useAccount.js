@@ -11,6 +11,7 @@ export const handler = (web3, provider) => () => {
 		() => (web3 ? "web3/accounts" : null),
 
 		async () => {
+			const accounts = await web3.eth.getAccounts();
 			const account = accounts[0];
 
 			if (!account) {
