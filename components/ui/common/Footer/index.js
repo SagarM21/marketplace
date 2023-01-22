@@ -6,7 +6,11 @@ export default function Footer() {
 					<div className='py-6'>
 						<p className='mb-6 text-white text-sm text-primary-2 font-bold'>
 							© {new Date().getFullYear()}{" "}
-							<a href='https://github.com/SagarM21' target='_blank'>
+							<a
+								href='https://github.com/SagarM21'
+								target='_blank'
+								rel='noreferrer'
+							>
 								SagarM21
 							</a>
 						</p>
